@@ -31,7 +31,7 @@ An intelligent resume evaluation system that automatically processes, analyzes, 
 
 ## Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher
 - Gmail account with API access
 - LinkedIn account (for profile verification)
 - GitHub account (for repository analysis)
@@ -46,8 +46,13 @@ cd resume-evaluator
 
 2. Create and activate a virtual environment:
 ```bash
+# On Windows
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate
+
+# On macOS/Linux
+python -m venv venv
+source venv/bin/activate
 ```
 
 3. Install dependencies:
@@ -55,51 +60,70 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Set up environment variables:
+## Setup and Configuration
+
+### 1. Gmail API Setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Create a new project or select an existing one
+3. Enable the Gmail API:
+   - Go to "APIs & Services" > "Library"
+   - Search for "Gmail API"
+   - Click "Enable"
+4. Create OAuth 2.0 credentials:
+   - Go to "APIs & Services" > "Credentials"
+   - Click "Create Credentials" > "OAuth client ID"
+   - Choose "Desktop app" as application type
+   - Download the credentials JSON file
+5. Save the credentials:
+   - Rename the downloaded file to `gmail_credentials.json`
+   - Place it in `src/utils/` directory
+
+### 2. Generate Gmail Token
+
+1. Run the token generation script:
+```bash
+python src/utils/get_gmail_token.py
+```
+
+2. A browser window will open automatically
+3. Sign in with your Google account
+4. You'll see a warning that the app isn't verified (normal for development)
+5. Click "Continue" or "Advanced" and then "Go to [Your App Name]"
+6. Grant the requested permissions
+7. The token will be saved to `src/utils/gmail_token.json`
+
+### 3. GitHub Token Setup
+
+1. Go to [GitHub Settings > Developer Settings > Personal Access Tokens](https://github.com/settings/tokens)
+2. Click "Generate new token"
+3. Select scopes:
+   - `repo` (Full control of private repositories)
+   - `read:user` (Read user profile data)
+   - `user:email` (Read user email addresses)
+4. Copy the generated token
+5. Create a `.env` file in the project root:
 ```bash
 cp .env.example .env
 ```
-Edit `.env` with your credentials:
+6. Add your GitHub token to `.env`:
 ```
-GMAIL_CREDENTIALS_FILE=path/to/credentials.json
-GITHUB_TOKEN=your_github_token
+GITHUB_TOKEN=your_github_token_here
 ```
 
-## Configuration
+## Customizing Email Search
 
-1. Gmail API Setup:
-   - Go to Google Cloud Console
-   - Create a new project
-   - Enable Gmail API
-   - Create credentials (OAuth 2.0)
-   - Download credentials and save as `credentials.json`
+The system uses Gmail's search operators to find relevant emails. You can customize the search in `src/config/api_config.toml`:
 
-2. Update `src/config/api_config.toml`:
 ```toml
 [gmail]
 # Basic query for resumes
 query = "subject:\"Resume\" has:attachment (filename:pdf OR filename:docx)"
 max_results = 10
 attachment_size_limit = 10485760  # 10MB
-
-# Alternative query examples:
-# query = "subject:\"Job Application\" has:attachment (filename:pdf OR filename:docx)"
-# query = "subject:\"CV\" has:attachment (filename:pdf OR filename:docx)"
-# query = "subject:\"Application for Position\" has:attachment (filename:pdf OR filename:docx)"
-
-[github]
-api_url = "https://api.github.com"
-min_repos = 3
-
-[skills]
-required = ["Python", "JavaScript", "SQL"]
-preferred = ["React", "Node.js", "MongoDB"]
-bonus = ["Docker", "Kubernetes", "AWS"]
 ```
 
-## Customizing Gmail Search
-
-The system uses Gmail's search operators to find relevant emails. Here are some common ways to customize the search:
+### Common Search Patterns
 
 1. **Subject-based Search**:
 ```toml
@@ -138,7 +162,7 @@ query = "subject:(\"Resume\" OR \"CV\") has:attachment (filename:pdf OR filename
 
 ### Gmail Search Operators
 
-Here are some useful Gmail search operators you can use:
+Here are useful Gmail search operators:
 
 - `subject:` - Search in subject line
 - `from:` - Search by sender
@@ -154,14 +178,22 @@ Here are some useful Gmail search operators you can use:
 - `is:starred` - Search starred emails
 - `is:unread` - Search unread emails
 
-## Usage
+## Running the System
 
-1. Run the main script:
+1. Start the evaluation process:
 ```bash
 python src/main.py
 ```
 
-2. View results in the `outputs/` directory:
+2. The system will:
+   - Authenticate with Gmail
+   - Search for resume attachments
+   - Parse and analyze resumes
+   - Check GitHub profiles
+   - Verify LinkedIn profiles
+   - Generate reports
+
+3. View results in the `outputs/` directory:
    - `candidate_reports/`: Individual candidate evaluations
    - `summary_report.txt`: Overall evaluation summary
 
@@ -171,26 +203,63 @@ python src/main.py
 resume-evaluator/
 ├── src/
 │   ├── agents/
-│   │   ├── email_agent.py
-│   │   ├── github_agent.py
-│   │   ├── linkedin_agent.py
-│   │   ├── resume_agent.py
-│   │   └── skills_verifier.py
+│   │   ├── email_agent.py      # Gmail interaction
+│   │   ├── github_agent.py     # GitHub profile analysis
+│   │   ├── linkedin_agent.py   # LinkedIn profile analysis
+│   │   ├── resume_agent.py     # Resume parsing
+│   │   └── skills_verifier.py  # Skills verification
 │   ├── tasks/
-│   │   ├── fetch_task.py
-│   │   ├── linkedin_task.py
-│   │   ├── verify_task.py
-│   │   └── report_task.py
+│   │   ├── fetch_task.py       # Email fetching
+│   │   ├── linkedin_task.py    # LinkedIn analysis
+│   │   ├── verify_task.py      # Skills verification
+│   │   └── report_task.py      # Report generation
 │   ├── utils/
-│   │   ├── error_handler.py
-│   │   └── logger.py
+│   │   ├── error_handler.py    # Error handling
+│   │   ├── logger.py          # Logging
+│   │   ├── auth.py            # Authentication
+│   │   └── get_gmail_token.py # Gmail token generation
 │   ├── config/
-│   │   └── api_config.toml
-│   └── main.py
-├── outputs/
-├── tests/
-├── requirements.txt
-└── README.md
+│   │   └── api_config.toml    # Configuration
+│   └── main.py                # Main script
+├── outputs/                   # Generated reports
+├── tests/                    # Test files
+├── requirements.txt          # Dependencies
+└── README.md                # Documentation
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Gmail Authentication Failed**
+   - Check if `gmail_credentials.json` exists in `src/utils/`
+   - Verify the credentials file is valid
+   - Run `get_gmail_token.py` to generate a new token
+
+2. **No Attachments Found**
+   - Verify your Gmail search query in `api_config.toml`
+   - Check if emails match the search criteria
+   - Ensure attachments are PDF or DOCX format
+
+3. **GitHub API Errors**
+   - Verify GitHub token in `.env`
+   - Check token permissions
+   - Ensure token hasn't expired
+
+4. **LinkedIn Verification Issues**
+   - Check internet connection
+   - Verify LinkedIn profile URLs
+   - Ensure profiles are public
+
+### Debug Mode
+
+Enable debug logging by setting environment variable:
+```bash
+# Windows
+set DEBUG=true
+
+# macOS/Linux
+export DEBUG=true
 ```
 
 ## Development
@@ -229,7 +298,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-For support, please open an issue in the GitHub repository or contact the maintainers.
+For support:
+1. Check the [Troubleshooting](#troubleshooting) section
+2. Open an issue in the GitHub repository
+3. Contact the maintainers
 
 ## Roadmap
 
