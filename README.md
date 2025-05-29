@@ -40,7 +40,7 @@ An intelligent resume evaluation system that automatically processes, analyzes, 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/resume-evaluator.git
+git clone https://github.com/vishnutej000/Resume-evaluator
 cd resume-evaluator
 ```
 
@@ -59,6 +59,8 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
+## uv package manager 
+uv add -r requirements.txt
 
 ## Setup and Configuration
 
