@@ -1,0 +1,14 @@
+[gmail]
+query = 'subject:"Resume" has:attachment (filename:pdf OR filename:docx)'
+max_results = 10
+attachment_size_limit = 10485760  # 10MB in bytes
+
+[github]
+api_url = "https://api.github.com"
+cache_ttl = 3600
+rate_limit_cushion = 100
+
+[output]
+format = "ndjson"
+top_candidates = 10
+include_raw_scores = true
