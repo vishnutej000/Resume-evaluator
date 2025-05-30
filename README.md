@@ -114,6 +114,11 @@ cp .env.example .env
 ```
 GITHUB_TOKEN=your_github_token_here
 ```
+7. Add your recruiting Parameters to `src/config/recruiter_config.toml`:
+```
+Change paramaters 
+```
+
 
 ## Customizing Email Search
 
