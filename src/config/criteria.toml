@@ -1,19 +1,19 @@
 [skills]
-required = ["Python", "Machine Learning", "Git"]
-preferred = ["TensorFlow", "PyTorch", "Docker", "AWS"]
-bonus = ["GraphQL", "Kubernetes", "CI/CD"]
+required = [ "Python", "Machine Learning", "Git",]
+preferred = [ "TensorFlow", "PyTorch", "Docker", "AWS",]
+bonus = [ "GraphQL", "Kubernetes", "CI/CD",]
 
 [experience]
-minimum_years = 2
-senior_threshold = 5
-weight = 0.30
+minimum_years = 0
+senior_threshold = 0
+weight = 0.3
 
 [education]
-accepted_degrees = ["B.Tech", "M.Tech", "B.S.", "M.S.", "PhD"]
-relevant_majors = ["Computer Science", "Data Science", "Engineering"]
-weight = 0.30
+accepted_degrees = [ "B.Tech", "M.Tech", "B.S.", "M.S.", "PhD",]
+relevant_majors = [ "Computer Science", "Data Science", "Engineering",]
+weight = 0.3
 
 [github]
 min_repos = 3
 min_commits_last_year = 50
-weight = 0.40
+weight = 0.4

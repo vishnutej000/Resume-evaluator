@@ -1,313 +1,315 @@
-# Resume Evaluator
+# Resume Evaluation System
 
-An intelligent resume evaluation system that automatically processes, analyzes, and ranks candidate resumes using multiple data sources including Gmail, LinkedIn, and GitHub.
+An intelligent system for automated resume evaluation and candidate screening. This system processes resumes from emails, analyzes GitHub profiles, and generates comprehensive evaluation reports.
+
+## Table of Contents
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [API Integration](#api-integration)
+- [Security](#security)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
 
 ## Features
 
-- **Automated Resume Processing**
-  - Fetches resumes from Gmail attachments
-  - Supports PDF and DOCX formats
-  - Extracts key information (skills, experience, education)
-  - Customizable email search queries
+### Core Features
+- Email-based resume collection and processing
+- GitHub profile analysis
+- Automated candidate scoring
+- Detailed evaluation reports
+- Customizable scoring criteria
+- Multi-format report generation (JSON, Markdown, PDF, HTML)
 
-- **Multi-Source Candidate Analysis**
-  - LinkedIn profile enrichment
-  - GitHub activity analysis
-  - Portfolio website verification
-  - Skills verification across platforms
-
-- **Intelligent Scoring System**
-  - Skills-based scoring
-  - Experience evaluation
-  - Education assessment
-  - GitHub contribution analysis
-  - LinkedIn profile completeness
-
-- **Comprehensive Reporting**
-  - Detailed candidate reports
-  - Skill verification results
-  - Confidence scoring
-  - Top candidate identification
+### Advanced Features
+- Integration with Gmail API
+- GitHub profile analysis
+- LinkedIn profile integration (optional)
+- Calendar integration for interviews
+- Automated notifications
+- Backup and security features
 
 ## Prerequisites
 
-- Python 3.10 or higher
+### System Requirements
+- Python 3.8 or higher
+- 4GB RAM minimum
+- 1GB free disk space
+- Internet connection for API access
+
+### Required Accounts
 - Gmail account with API access
-- LinkedIn account (for profile verification)
-- GitHub account (for repository analysis)
+- GitHub account with API token
+- LinkedIn account (optional)
+- Google Calendar account (optional)
 
 ## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/resume-evaluator.git
-cd resume-evaluator
+git clone https://github.com/yourusername/resume-evaluation.git
+cd resume-evaluation
 ```
 
 2. Create and activate a virtual environment:
 ```bash
-# On Windows
+# Windows
 python -m venv venv
-venv\Scripts\activate
+.\venv\Scripts\activate
 
-# On macOS/Linux
-python -m venv venv
+# Linux/Mac
+python3 -m venv venv
 source venv/bin/activate
 ```
 
-3. Install dependencies:
+3. Install required packages:
 ```bash
 pip install -r requirements.txt
 ```
 
-## Setup and Configuration
+4. Set up API credentials:
+   - Create a `config` directory in the project root
+   - Add your API credentials:
+     - Gmail: `config/gmail_credentials.json`
+     - GitHub: Add token to `recruiter_config.toml`
+     - LinkedIn: Add credentials to `recruiter_config.toml`
+     - Calendar: `config/calendar_credentials.json`
 
-### 1. Gmail API Setup
+## Configuration
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a new project or select an existing one
-3. Enable the Gmail API:
-   - Go to "APIs & Services" > "Library"
-   - Search for "Gmail API"
-   - Click "Enable"
-4. Create OAuth 2.0 credentials:
-   - Go to "APIs & Services" > "Credentials"
-   - Click "Create Credentials" > "OAuth client ID"
-   - Choose "Desktop app" as application type
-   - Download the credentials JSON file
-5. Save the credentials:
-   - Rename the downloaded file to `gmail_credentials.json`
-   - Place it in `src/utils/` directory
+### Basic Configuration
+1. Edit `src/config/recruiter_config.toml` to set your requirements:
+   - Email search settings
+   - Scoring weights
+   - Required skills
+   - Experience requirements
+   - Education requirements
+   - GitHub requirements
+   - Output settings
 
-### 2. Generate Gmail Token
+2. Configure email settings:
+   - Set your Gmail credentials
+   - Configure email search parameters
+   - Set notification preferences
 
-1. Run the token generation script:
-```bash
-python src/utils/get_gmail_token.py
-```
+3. Configure GitHub settings:
+   - Add your GitHub token
+   - Set minimum requirements
+   - Configure preferred topics and languages
 
-2. A browser window will open automatically
-3. Sign in with your Google account
-4. You'll see a warning that the app isn't verified (normal for development)
-5. Click "Continue" or "Advanced" and then "Go to [Your App Name]"
-6. Grant the requested permissions
-7. The token will be saved to `src/utils/gmail_token.json`
+### Advanced Configuration
 
-### 3. GitHub Token Setup
-
-1. Go to [GitHub Settings > Developer Settings > Personal Access Tokens](https://github.com/settings/tokens)
-2. Click "Generate new token"
-3. Select scopes:
-   - `repo` (Full control of private repositories)
-   - `read:user` (Read user profile data)
-   - `user:email` (Read user email addresses)
-4. Copy the generated token
-5. Create a `.env` file in the project root:
-```bash
-cp .env.example .env
-```
-6. Add your GitHub token to `.env`:
-```
-GITHUB_TOKEN=your_github_token_here
-```
-
-## Customizing Email Search
-
-The system uses Gmail's search operators to find relevant emails. You can customize the search in `src/config/api_config.toml`:
-
+#### Scoring Configuration
 ```toml
-[gmail]
-# Basic query for resumes
-query = "subject:\"Resume\" has:attachment (filename:pdf OR filename:docx)"
-max_results = 10
-attachment_size_limit = 10485760  # 10MB
+[scoring.weights]
+skills = 30
+experience = 25
+education = 15
+github = 30
 ```
 
-### Common Search Patterns
-
-1. **Subject-based Search**:
+#### Skills Configuration
 ```toml
-# Search for specific subject lines
-query = "subject:\"Resume\""
-query = "subject:\"Job Application\""
-query = "subject:\"CV\""
-query = "subject:\"Application for Position\""
+[skills]
+required_skills = [
+    "Python",
+    "JavaScript",
+    "React",
+    "SQL"
+]
 ```
 
-2. **Combined Search**:
+#### Experience Configuration
 ```toml
-# Search for multiple subjects
-query = "subject:(\"Resume\" OR \"CV\" OR \"Job Application\")"
+[experience]
+min_years = 2
+preferred_years = 5
+max_years = 15
 ```
 
-3. **Time-based Search**:
-```toml
-# Search within specific time periods
-query = "subject:\"Resume\" newer_than:7d"  # Last 7 days
-query = "subject:\"Resume\" after:2024/01/01"  # After specific date
-```
+## Usage
 
-4. **Label-based Search**:
-```toml
-# Search in specific labels
-query = "label:applications subject:\"Resume\""
-```
+### Basic Usage
 
-5. **Complex Queries**:
-```toml
-# Combine multiple conditions
-query = "subject:\"Resume\" has:attachment (filename:pdf OR filename:docx) newer_than:30d"
-query = "subject:(\"Resume\" OR \"CV\") has:attachment (filename:pdf OR filename:docx) in:inbox"
-```
-
-### Gmail Search Operators
-
-Here are useful Gmail search operators:
-
-- `subject:` - Search in subject line
-- `from:` - Search by sender
-- `to:` - Search by recipient
-- `has:attachment` - Emails with attachments
-- `filename:` - Search by attachment type
-- `newer_than:` - Emails newer than specified time
-- `older_than:` - Emails older than specified time
-- `after:` - Emails after specific date
-- `before:` - Emails before specific date
-- `in:inbox` - Search in inbox
-- `label:` - Search in specific label
-- `is:starred` - Search starred emails
-- `is:unread` - Search unread emails
-
-## Running the System
-
-1. Start the evaluation process:
+1. Start the system:
 ```bash
 python src/main.py
 ```
 
-2. The system will:
-   - Authenticate with Gmail
-   - Search for resume attachments
-   - Parse and analyze resumes
-   - Check GitHub profiles
-   - Verify LinkedIn profiles
-   - Generate reports
+2. Monitor the process:
+- Check `outputs/logs/app.log` for detailed logs
+- View reports in `outputs/reports/`
+- Check candidate data in `outputs/candidates/`
 
-3. View results in the `outputs/` directory:
-   - `candidate_reports/`: Individual candidate evaluations
-   - `summary_report.txt`: Overall evaluation summary
+### Advanced Usage
+
+#### Automated Processing
+1. Enable auto-processing in `recruiter_config.toml`:
+```toml
+[automation]
+auto_process_new_emails = true
+check_interval_minutes = 60
+```
+
+2. Set up notifications:
+```toml
+[notifications]
+send_notifications = true
+notification_email = "your@email.com"
+```
+
+#### Custom Report Generation
+1. Configure report settings:
+```toml
+[report]
+company_name = "Your Company"
+position_title = "Software Engineer"
+```
+
+2. Generate custom reports:
+```bash
+python src/utils/report_generator.py --format pdf
+```
 
 ## Project Structure
 
 ```
-resume-evaluator/
+resume-evaluation/
 ├── src/
-│   ├── agents/
-│   │   ├── email_agent.py      # Gmail interaction
-│   │   ├── github_agent.py     # GitHub profile analysis
-│   │   ├── linkedin_agent.py   # LinkedIn profile analysis
-│   │   ├── resume_agent.py     # Resume parsing
-│   │   └── skills_verifier.py  # Skills verification
-│   ├── tasks/
-│   │   ├── fetch_task.py       # Email fetching
-│   │   ├── linkedin_task.py    # LinkedIn analysis
-│   │   ├── verify_task.py      # Skills verification
-│   │   └── report_task.py      # Report generation
-│   ├── utils/
-│   │   ├── error_handler.py    # Error handling
-│   │   ├── logger.py          # Logging
-│   │   ├── auth.py            # Authentication
-│   │   └── get_gmail_token.py # Gmail token generation
 │   ├── config/
-│   │   └── api_config.toml    # Configuration
-│   └── main.py                # Main script
-├── outputs/                   # Generated reports
-├── tests/                    # Test files
-├── requirements.txt          # Dependencies
-└── README.md                # Documentation
+│   │   ├── recruiter_config.toml
+│   │   └── criteria.toml
+│   ├── utils/
+│   │   ├── email_processor.py
+│   │   ├── github_analyzer.py
+│   │   ├── resume_parser.py
+│   │   ├── report_generator.py
+│   │   └── config_validator.py
+│   └── main.py
+├── outputs/
+│   ├── reports/
+│   ├── candidates/
+│   └── logs/
+├── config/
+│   ├── gmail_credentials.json
+│   └── calendar_credentials.json
+├── requirements.txt
+└── README.md
+```
+
+## API Integration
+
+### Gmail API Setup
+1. Go to Google Cloud Console
+2. Create a new project
+3. Enable Gmail API
+4. Create credentials
+5. Download and save as `config/gmail_credentials.json`
+
+### GitHub API Setup
+1. Go to GitHub Settings
+2. Generate new token
+3. Add to `recruiter_config.toml`:
+```toml
+[integration.api_configs.github]
+token = "your_github_token"
+```
+
+### LinkedIn API Setup (Optional)
+1. Create LinkedIn Developer account
+2. Create new application
+3. Add credentials to config:
+```toml
+[integration.api_configs.linkedin]
+client_id = "your_client_id"
+client_secret = "your_client_secret"
+```
+
+## Security
+
+### Data Protection
+- Sensitive data masking
+- Encrypted storage
+- Secure API handling
+- Access control
+
+### Configuration
+```toml
+[security]
+mask_sensitive_data = true
+encrypt_output_files = true
+audit_trail = true
 ```
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Gmail Authentication Failed**
-   - Check if `gmail_credentials.json` exists in `src/utils/`
-   - Verify the credentials file is valid
-   - Run `get_gmail_token.py` to generate a new token
+1. Email Processing Issues
+   - Check Gmail API credentials
+   - Verify email search settings
+   - Check attachment types
 
-2. **No Attachments Found**
-   - Verify your Gmail search query in `api_config.toml`
-   - Check if emails match the search criteria
-   - Ensure attachments are PDF or DOCX format
+2. GitHub Analysis Issues
+   - Verify GitHub token
+   - Check rate limits
+   - Verify repository access
 
-3. **GitHub API Errors**
-   - Verify GitHub token in `.env`
-   - Check token permissions
-   - Ensure token hasn't expired
+3. Report Generation Issues
+   - Check output directory permissions
+   - Verify template files
+   - Check file format settings
 
-4. **LinkedIn Verification Issues**
-   - Check internet connection
-   - Verify LinkedIn profile URLs
-   - Ensure profiles are public
-
-### Debug Mode
-
-Enable debug logging by setting environment variable:
-```bash
-# Windows
-set DEBUG=true
-
-# macOS/Linux
-export DEBUG=true
-```
-
-## Development
-
-1. Run tests:
-```bash
-pytest tests/
-```
-
-2. Code formatting:
-```bash
-black src/
-flake8 src/
-mypy src/
+### Logging
+- Check `outputs/logs/app.log` for detailed error information
+- Enable debug logging in `recruiter_config.toml`:
+```toml
+[logging]
+log_level = "DEBUG"
 ```
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+3. Make your changes
+4. Submit a pull request
+
+### Development Setup
+1. Install development dependencies:
+```bash
+pip install -r requirements-dev.txt
+```
+
+2. Run tests:
+```bash
+python -m pytest tests/
+```
+
+3. Check code style:
+```bash
+flake8 src/
+```
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Google Gmail API
-- GitHub API
-- BeautifulSoup4
-- PyPDF2
-- python-docx
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Support
 
-For support:
-1. Check the [Troubleshooting](#troubleshooting) section
-2. Open an issue in the GitHub repository
-3. Contact the maintainers
+For support, please:
+1. Check the troubleshooting guide
+2. Review the documentation
+3. Open an issue on GitHub
+4. Contact the maintainers
 
-## Roadmap
+## Acknowledgments
 
-- [ ] Add support for more resume formats
-- [ ] Implement machine learning-based skill matching
-- [ ] Add support for more professional networks
-- [ ] Enhance scoring algorithms
-- [ ] Add web interface
-- [ ] Implement real-time notifications 
+- Gmail API
+- GitHub API
+- LinkedIn API
+- Google Calendar API
+- All contributors and users 

@@ -1,0 +1,399 @@
+# Recruiter Configuration File
+# This file contains all the parameters that recruiters can easily adjust
+
+[email_search]
+# Email search configuration
+subject_keywords = [
+    "Resume",
+    "CV",
+    "Job Application",
+    "Application for Position",
+    "Job Candidate",
+    "Application for Software Engineer",
+    "Software Developer Application"
+]
+attachment_types = ["pdf", "docx", "doc", "txt"]
+max_results = 50
+search_timeframe = "30d"  # Last 30 days
+min_attachment_size = 1024  # 1KB
+max_attachment_size = 10485760  # 10MB
+exclude_keywords = [
+    "spam",
+    "automated",
+    "test"
+]
+include_keywords = [
+    "software",
+    "developer",
+    "engineer",
+    "programmer"
+]
+
+[scoring.weights]
+# Scoring weights for different aspects (total should be 100)
+skills = 30
+experience = 25
+education = 15
+github = 30
+
+[scoring.minimum_scores]
+# Minimum scores required for each category (0-100)
+skills = 60
+experience = 50
+education = 50
+github = 40
+
+[scoring.bonus_points]
+# Bonus points for additional qualifications
+certifications = 5
+open_source_contributions = 10
+tech_blog = 5
+speaking_engagements = 5
+patents = 15
+
+[skills]
+# Required skills for the position
+required_skills = [
+    "Python",
+    "JavaScript",
+    "React",
+    "SQL",
+    "Git",
+    "REST APIs",
+    "Docker",
+    "AWS"
+]
+
+# Preferred skills (will give bonus points)
+preferred_skills = [
+    "TypeScript",
+    "Node.js",
+    "Kubernetes",
+    "GraphQL",
+    "MongoDB",
+    "Redis",
+    "CI/CD",
+    "Terraform"
+]
+
+[skills.levels]
+# Skill levels and their weights
+beginner = 1
+intermediate = 2
+advanced = 3
+expert = 4
+
+[experience]
+# Experience requirements
+min_years = 2
+preferred_years = 5
+max_years = 15
+
+[experience.weights]
+# Experience type weights
+full_time = 1.0
+contract = 0.8
+freelance = 0.7
+internship = 0.5
+
+[experience.industry_weights]
+# Industry experience weights
+tech = 1.0
+finance = 0.9
+healthcare = 0.9
+retail = 0.8
+other = 0.7
+
+[education]
+# Education requirements
+required_degree = "Bachelor's"
+preferred_degree = "Master's"
+relevant_fields = [
+    "Computer Science",
+    "Software Engineering",
+    "Information Technology",
+    "Computer Engineering",
+    "Data Science",
+    "Mathematics",
+    "Physics"
+]
+
+[education.weights]
+# Education weights
+phd = 1.0
+masters = 0.9
+bachelors = 0.8
+associates = 0.6
+certification = 0.5
+
+[education.university_weights]
+# University ranking weights
+top_10 = 1.0
+top_50 = 0.9
+top_100 = 0.8
+accredited = 0.7
+other = 0.6
+
+[github]
+# GitHub profile requirements
+min_repositories = 5
+min_stars = 10
+min_contributions = 50
+min_recent_activity = 10  # Contributions in last 30 days
+min_followers = 5
+min_following = 10
+
+# Preferred repository topics
+preferred_topics = [
+    "web-development",
+    "api",
+    "machine-learning",
+    "data-science",
+    "cloud-computing",
+    "devops",
+    "security",
+    "mobile-development"
+]
+
+# Preferred programming languages
+preferred_languages = [
+    "Python",
+    "JavaScript",
+    "TypeScript",
+    "Java",
+    "Go",
+    "Rust",
+    "C++",
+    "C#"
+]
+
+[github.activity_weights]
+# GitHub activity weights
+commits = 1.0
+pull_requests = 1.2
+issues = 0.8
+reviews = 1.1
+discussions = 0.7
+
+[output]
+# Output configuration
+top_candidates = 10
+generate_detailed_reports = true
+include_github_stats = true
+include_skills_breakdown = true
+include_education_details = true
+include_experience_details = true
+include_certifications = true
+include_projects = true
+include_recommendations = true
+
+# Report formats
+formats = [
+    "json",
+    "markdown",
+    "pdf",
+    "html"
+]
+
+[output.directories]
+# Output directories
+reports = "outputs/reports"
+candidates = "outputs/candidates"
+logs = "outputs/logs"
+temp = "outputs/temp"
+
+[report]
+# Report customization
+company_name = "Your Company Name"
+position_title = "Software Engineer"
+department = "Engineering"
+report_title = "Resume Evaluation Report"
+include_company_logo = false
+logo_path = "assets/company_logo.png"
+
+# Report sections
+sections = [
+    "summary",
+    "candidate_details",
+    "skills_analysis",
+    "experience_analysis",
+    "education_analysis",
+    "github_analysis",
+    "recommendations"
+]
+
+[report.styling]
+# Report styling
+primary_color = "#007bff"
+secondary_color = "#6c757d"
+font_family = "Arial"
+font_size = "12pt"
+
+[filtering]
+# Candidate filtering options
+filter_by_location = false
+preferred_locations = [
+    "United States",
+    "Canada",
+    "United Kingdom",
+    "European Union",
+    "Australia",
+    "Singapore"
+]
+
+filter_by_visa_status = false
+accepted_visa_status = [
+    "Citizen",
+    "Green Card",
+    "H1B",
+    "OPT",
+    "L1",
+    "TN"
+]
+
+# Additional filtering criteria
+filter_by_availability = false
+min_availability_days = 30
+filter_by_salary_expectations = false
+max_salary_expectation = 200000
+filter_by_notice_period = false
+max_notice_period_days = 60
+
+[notifications]
+# Email notification settings
+send_notifications = false
+notification_email = "recruiter@company.com"
+notify_on_completion = true
+notify_on_error = true
+notify_on_warning = true
+
+[notifications.templates]
+# Notification templates
+completion = "templates/completion_email.html"
+error = "templates/error_email.html"
+warning = "templates/warning_email.html"
+
+[notifications.schedule]
+# Notification schedule
+daily_summary = true
+weekly_summary = true
+monthly_summary = true
+instant_alerts = true
+
+[automation]
+# Automation settings
+auto_process_new_emails = false
+check_interval_minutes = 60
+max_processing_time = 3600  # 1 hour in seconds
+retry_failed_attempts = 3
+max_concurrent_processes = 4
+cleanup_old_files = true
+cleanup_after_days = 30
+
+[automation.rules]
+# Automation rules
+auto_reject = false
+auto_shortlist = false
+auto_schedule_interview = false
+auto_send_rejection = false
+
+[security]
+# Security settings
+mask_sensitive_data = true
+masked_fields = [
+    "phone",
+    "address",
+    "ssn",
+    "dob",
+    "salary",
+    "bank_details",
+    "passport"
+]
+encrypt_output_files = false
+encryption_key_path = "config/encryption.key"
+log_sensitive_operations = true
+audit_trail = true
+
+[security.access_control]
+# Access control
+admin_users = ["admin@company.com"]
+recruiter_users = ["recruiter@company.com"]
+viewer_users = ["viewer@company.com"]
+
+[integration]
+# Integration settings
+enable_gmail_api = false
+enable_linkedin_api = false
+enable_github_api = true
+enable_calendar_api = false
+
+[integration.api_configs.gmail]
+# Gmail API configuration
+credentials_path = "config/gmail_credentials.json"
+token_path = "config/gmail_token.json"
+
+[integration.api_configs.linkedin]
+# LinkedIn API configuration
+client_id = ""
+client_secret = ""
+
+[integration.api_configs.github]
+# GitHub API configuration
+token = ""
+api_version = "2022-11-28"
+
+[integration.api_configs.calendar]
+# Calendar API configuration
+credentials_path = "config/calendar_credentials.json"
+token_path = "config/calendar_token.json"
+
+[logging]
+# Logging configuration
+log_level = "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+log_file = "logs/app.log"
+max_log_size = 10485760  # 10MB
+backup_count = 5
+log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+log_date_format = "%Y-%m-%d %H:%M:%S"
+
+[logging.categories]
+# Log categories
+email_processing = true
+resume_parsing = true
+github_analysis = true
+scoring = true
+report_generation = true
+api_calls = true
+security = true
+
+[performance]
+# Performance settings
+enable_caching = true
+cache_ttl = 3600  # 1 hour
+max_memory_usage = 1073741824  # 1GB
+enable_parallel_processing = true
+max_workers = 4
+timeout = 300  # 5 minutes
+
+[performance.rate_limits]
+# Rate limiting
+github_api = 5000  # requests per hour
+email_api = 1000  # requests per hour
+linkedin_api = 100  # requests per hour
+
+[backup]
+# Backup settings
+enable_auto_backup = true
+backup_interval_hours = 24
+backup_retention_days = 30
+backup_path = "backups"
+compress_backups = true
+encrypt_backups = true
+
+[backup.components]
+# Backup components
+config = true
+reports = true
+logs = true
+candidates = true
+templates = true 

@@ -13,7 +13,7 @@ class ResumeAgent:
         self.parser = parser
         self.config = config
         self.error_handler = error_handler
-
+    
     def evaluate_candidates(self, attachments):
         """Evaluate candidates based on resume content"""
         candidates = []
@@ -27,7 +27,7 @@ class ResumeAgent:
                 print(f"[DEBUG] Exception during parsing {attachment['filename']}: {e}")
                 candidates.append({'filename': attachment['filename'], 'error': str(e)})
         return candidates
-
+    
     def process_resume(self, attachment):
         """Process individual resume"""
         try:
@@ -54,7 +54,7 @@ class ResumeAgent:
         except Exception as e:
             self.error_handler.handle_parsing_error(e, attachment['filename'])
             return None
-
+    
     def calculate_skills_score(self, skills):
         """Calculate skills score based on criteria"""
         if not skills:
@@ -71,7 +71,7 @@ class ResumeAgent:
         score += (preferred_count / len(preferred_skills)) * 30
         score += min(bonus_count * 5, 10)
         return min(score, 100)
-
+    
     def calculate_experience_score(self, years):
         """Calculate experience score"""
         if years < self.config['experience']['minimum_years']:
@@ -80,7 +80,7 @@ class ResumeAgent:
         if years >= senior_threshold:
             return 100
         return (years / senior_threshold) * 100
-
+    
     def calculate_education_score(self, education):
         """Calculate education score"""
         if not education:

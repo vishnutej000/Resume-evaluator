@@ -22,100 +22,22 @@ wheels/
 
 # Virtual Environment
 venv/
-env/
 ENV/
-.env
-.venv
-env.bak/
-venv.bak/
+env/
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
-.DS_Store
-.project
-.pydevproject
-.settings/
 
 # Project specific
+.env
+src/utils/gmail_credentials.json
+src/utils/gmail_token.json
 outputs/
-logs/
 *.log
-temp/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~
 
-# Credentials and secrets
-gmail_credentials.json
-gmail_token.json
-*.pem
-*.key
-.env.local
-.env.*.local
-
-# Test coverage
-.coverage
-htmlcov/
-.pytest_cache/
-.tox/
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-*.ipynb
-
-# Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-
-# Documentation
-docs/_build/
-site/
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
+# OS specific
+.DS_Store
+Thumbs.db
