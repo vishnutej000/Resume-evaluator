@@ -40,7 +40,7 @@ An intelligent resume evaluation system that automatically processes, analyzes, 
 
 1. Clone the repository:
 ```bash
-git clone [https://github.com/vishnutej000/Resume-evaluator.git](https://github.com/vishnutej000/Resume-evaluator.git)
+git clone https://github.com/vishnutej000/Resume-evaluator.git
 cd resume-evaluator
 ```
 
